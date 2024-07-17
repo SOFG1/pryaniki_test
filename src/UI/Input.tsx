@@ -4,12 +4,19 @@ interface IProps {
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
-  type?: string
+  type?: string;
   disabled?: boolean;
-  className?: string
+  className?: string;
 }
 
-export const Input = ({ value, onChange, placeholder,type, disabled, className }: IProps) => {
+export const Input = ({
+  value,
+  onChange,
+  placeholder,
+  type,
+  disabled,
+  className,
+}: IProps) => {
   return (
     <InputMUI
       value={value}

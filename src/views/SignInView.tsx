@@ -1,13 +1,14 @@
 import styled from "styled-components";
-import { Input } from "../UI/Input/Input";
+import { Input } from "../UI/Input";
 import { useState } from "react";
+import { Button } from "../UI/Button";
 
 const StyledView = styled.div`
   max-width: 300px;
   margin: 200px auto 0;
   display: flex;
   flex-direction: column;
-  background-color: #ffd772;
+  background-color: #fff08e;
   border-radius: 40px;
   padding: 30px;
 `;
@@ -19,6 +20,10 @@ const StyledTitle = styled.h1`
   text-align: center;
 `;
 
+const StyledInput = styled(Input)`
+    margin-bottom: 25px;
+`
+
 export const SignInView = () => {
     const [userName, setUserName] = useState<string>("")
     const [password, setPassword] = useState<string>("")
@@ -26,10 +31,9 @@ export const SignInView = () => {
   return (
     <StyledView>
       <StyledTitle>Sign In</StyledTitle>
-      <Input placeholder="User Name" value={userName} onChange={setUserName} />
-      <Input placeholder="Password" value={password} onChange={setPassword} type="password" />
-      
-
+      <StyledInput placeholder="User Name" value={userName} onChange={setUserName} />
+      <StyledInput placeholder="Password" value={password} onChange={setPassword} type="password" />
+      <Button onClick={() => {}}>Sign in</Button>
     </StyledView>
   );
 };

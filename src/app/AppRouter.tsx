@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import { MainPage } from "./pages/MainPage";
-import { SignInPage } from "./pages/SignInPage";
+import { MainPage } from "../pages/MainPage";
+import { SignInPage } from "../pages/SignInPage";
 
 const routes = [
   { path: "/", page: <MainPage /> },
@@ -10,8 +10,8 @@ const routes = [
 export const AppRouter = () => {
   return (
     <Routes>
-      {routes.map((p) => (
-        <Route path={p.path} element={p.page} />
+      {routes.map((p, i) => (
+        <Route path={p.path} element={p.page} key={i} />
       ))}
     </Routes>
   );
