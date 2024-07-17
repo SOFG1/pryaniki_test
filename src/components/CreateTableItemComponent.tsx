@@ -125,6 +125,11 @@ export const CreateTableItemComponent = ({
                   sx={{ width: "100%", mb: "25px" }}
                 >
                   <DateTimePicker
+                  slotProps={{
+                    textField: {
+                      error: false
+                    }
+                  }}
                     label={p.viewName}
                     value={dayjs(data[p.prop] || null)}
                     onChange={(v) => handleChange(p.prop, v)}
