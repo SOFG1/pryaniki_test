@@ -38,4 +38,15 @@ export const tableApi = {
       }
     );
   },
+  editItem: async (token: string, id: string, data: ICraeteTableItem) => {
+    return await axiosInstance.post(
+      `/userdocs/set/${id}`,
+      data,
+      {
+        headers: {
+          "x-auth": token,
+        },
+      }
+    );
+  },
 };

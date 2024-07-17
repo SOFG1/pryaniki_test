@@ -11,6 +11,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import { convertApiData } from "../utils/convertApiData";
 
 const StyledContent = styled.div`
   position: absolute;
@@ -42,23 +43,23 @@ const StyledError = styled.p`
 
 interface IProps {
   open: boolean;
+  selectedItem: ITableItem | null;
   onClose: () => void;
   onCreate: (i: ITableItem) => void;
+  onEdit: (i: ITableItem) => void;
 }
 
 export const CreateTableItemComponent = ({
   open,
+  selectedItem,
   onClose,
   onCreate,
+  onEdit,
 }: IProps) => {
   const token = useSelector(userTokenSelector) as string;
   const [data, setData] = useState<any>({});
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
-
-
-  console.log(data)
 
   const handleChange = (prop: string, value: any) => {
     setData((p: any) => ({ ...p, [prop]: value }));
@@ -80,12 +81,36 @@ export const CreateTableItemComponent = ({
     }
   };
 
+  const handleEdit = async () => {
+    setIsFetching(true);
+    const { data: reqData, error: reqError } = await handleRequest(
+      tableApi.editItem(token, (selectedItem as ITableItem).id, data)
+    );
+    setIsFetching(false);
+    if (reqData) {
+      onEdit(reqData);
+      setData({});
+      onClose();
+    }
+    if (reqError) {
+      setError(reqError.title);
+    }
+  };
+
   //Reset error
   useEffect(() => {
     if (error) {
       setTimeout(() => setError(null), 4000);
     }
   }, [error]);
+
+  //Fill form with selected data
+  useEffect(() => {
+    if (selectedItem?.companySigDate) {
+      const convertedData = convertApiData(selectedItem);
+      setData(convertedData);
+    }
+  }, [selectedItem]);
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -118,14 +143,25 @@ export const CreateTableItemComponent = ({
             />
           );
         })}
-        <Button
-          onClick={handleCreate}
-          variant="contained"
-          color="success"
-          disabled={isFetching}
-        >
-          Create
-        </Button>
+        {!selectedItem && (
+          <Button
+            onClick={handleCreate}
+            variant="contained"
+            color="success"
+            disabled={isFetching}
+          >
+            Create
+          </Button>
+        )}
+        {selectedItem && (
+          <Button
+            onClick={handleEdit}
+            variant="contained"
+            disabled={isFetching}
+          >
+            Edit
+          </Button>
+        )}
         {error && <StyledError>{error}</StyledError>}
       </StyledContent>
     </Modal>

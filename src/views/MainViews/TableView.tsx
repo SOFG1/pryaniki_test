@@ -24,6 +24,7 @@ export const TableView = () => {
   const [tableData, setTableData] = useState<ITableItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [selectedItem, setSelectedItem] = useState<null | ITableItem>(null);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -39,6 +40,18 @@ export const TableView = () => {
 
   const onCreateItem = (item: ITableItem) => {
     setTableData((p) => [...p, item]);
+  };
+
+  const onEditItem = (item: ITableItem) => {
+    const index = tableData.findIndex(i => i.id === item.id)
+    const copy = [...tableData]
+    copy.splice(index, 1, item)
+    setTableData(copy);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedItem(null);
   };
 
   useEffect(() => {
@@ -57,6 +70,7 @@ export const TableView = () => {
               {tableData.map((item) => (
                 <TableRowComponent
                   onDelete={onDeleteItem}
+                  onSelect={setSelectedItem}
                   item={item}
                   key={item.id}
                 />
@@ -66,9 +80,11 @@ export const TableView = () => {
         </TableContainer>
       )}
       <CreateTableItemComponent
-        open={showModal}
+        open={showModal || !!selectedItem}
+        selectedItem={selectedItem}
         onCreate={onCreateItem}
-        onClose={() => setShowModal(false)}
+        onEdit={onEditItem}
+        onClose={handleCloseModal}
       />
     </StyledWrapper>
   );

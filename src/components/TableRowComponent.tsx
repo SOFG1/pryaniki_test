@@ -12,9 +12,10 @@ import { formatDate } from "../utils/formatDate";
 interface IProps {
   item: ITableItem;
   onDelete: (id: string) => void;
+  onSelect: (item: ITableItem) => void
 }
 
-export const TableRowComponent = ({ item, onDelete }: IProps) => {
+export const TableRowComponent = ({ item, onDelete, onSelect }: IProps) => {
   const token = useSelector(userTokenSelector) as string;
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
@@ -41,6 +42,7 @@ export const TableRowComponent = ({ item, onDelete }: IProps) => {
         <Button
           startIcon={<EditIcon fontSize="small" />}
           variant="contained"
+          onClick={() => onSelect(item)}
           fullWidth={true}
         >
           Edit
