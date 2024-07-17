@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { TableHeadComponent } from "../../components/TableHeadComponent";
 import { TableRowComponent } from "../../components/TableRowComponent";
-import { CreateTableItemComponent } from "../../components/CreateTableItemComponent";
+import { CreateEditItemComponent } from "../../components/CreateEditItemComponent";
 
 const StyledWrapper = styled.div`
   padding-top: 100px;
@@ -79,7 +79,7 @@ export const TableView = () => {
           </Table>
         </TableContainer>
       )}
-      <CreateTableItemComponent
+      <CreateEditItemComponent
         open={showModal || !!selectedItem}
         selectedItem={selectedItem}
         onCreate={onCreateItem}

@@ -54,7 +54,7 @@ interface IProps {
   onEdit: (i: ITableItem) => void;
 }
 
-export const CreateTableItemComponent = ({
+export const CreateEditItemComponent = ({
   open,
   selectedItem,
   onClose,
