@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { Input } from "../UI/Input";
+import { Input } from "../../UI/Input";
 import { useEffect, useState } from "react";
-import { Button } from "../UI/Button";
-import { handleRequest } from "../api";
-import { SignInData, userApi } from "../api/userApi";
+import { Button } from "../../UI/Button";
+import { handleRequest } from "../../api";
+import { SignInData, userApi } from "../../api/userApi";
 import { useDispatch } from "react-redux";
-import { setToken } from "../store/user/slice";
+import { setToken } from "../../store/user/slice";
 
 const StyledView = styled.div`
   max-width: 300px;
