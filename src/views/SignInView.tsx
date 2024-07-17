@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Input } from "../UI/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../UI/Button";
 import { handleRequest } from "../api";
 import { SignInData, userApi } from "../api/userApi";
@@ -28,18 +28,36 @@ const StyledInput = styled(Input)`
   margin-bottom: 25px;
 `;
 
+const StyledError = styled.p`
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+`
+
 export const SignInView = () => {
   const dispatch = useDispatch();
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
 
   const signin = async () => {
     const reqData: SignInData = { username: userName, password };
+    setIsLoading(true)
     const { data, error } = await handleRequest(userApi.login(reqData));
-    if(data) {
-      dispatch(setToken(data.token))
-    }
+    setIsLoading(false)
+    if(data) dispatch(setToken(data.token))
+    if(error) setError(error)
   };
+
+
+
+  //Reset error
+  useEffect(() => {
+    if(error) {
+      setTimeout(() => setError(null), 4000)
+    }
+  }, [error])
 
   return (
     <StyledView>
@@ -55,7 +73,8 @@ export const SignInView = () => {
         onChange={setPassword}
         type="password"
       />
-      <Button onClick={signin}>Sign in</Button>
+      <Button onClick={signin} disabled={isLoading}>Sign in</Button>
+      {error && <StyledError>{error}</StyledError>}
     </StyledView>
   );
 };
