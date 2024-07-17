@@ -9,7 +9,7 @@ interface IProps {
 
 export const Providers = ({ children }: IProps) => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/pryaniki_test">
       <Provider store={store}>{children}</Provider>
     </BrowserRouter>
   );
