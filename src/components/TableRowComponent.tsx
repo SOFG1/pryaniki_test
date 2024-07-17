@@ -29,7 +29,7 @@ export const TableRowComponent = ({ item, onDelete }: IProps) => {
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
       {TABLE_ITEM_PROPERTIES.map((p) => {
-        return <TableCell key={p}>{item[p]}</TableCell>;
+        return <TableCell key={p.prop}>{item[p.prop]}</TableCell>;
       })}
       <TableCell>
         <Button

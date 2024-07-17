@@ -7,7 +7,7 @@ export const TableHeadComponent = () => {
     <TableHead>
       <TableRow>
         {TABLE_ITEM_PROPERTIES.map((p) => {
-          return <TableCell key={p}>{p}</TableCell>;
+          return <TableCell key={p.prop}>{p.viewName}</TableCell>;
         })}
         <TableCell>
           <Button
