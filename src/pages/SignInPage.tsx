@@ -1,7 +1,9 @@
-
-
-
+import { SignInView } from "../views/SignInView";
 
 export const SignInPage = () => {
-    return <>SignInPage</>
-}
+  return (
+    <div>
+      <SignInView />
+    </div>
+  );
+};
