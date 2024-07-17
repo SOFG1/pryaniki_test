@@ -32,10 +32,7 @@ export const TableRowComponent = ({ item, onDelete }: IProps) => {
     >
       {TABLE_ITEM_PROPERTIES.map((p) => {
         let value = item[p.prop]
-        if(p.prop === "companySigDate") {
-            value = formatDate(value)
-        }
-        if(p.prop === "employeeSigDate") {
+        if(p.type === "date") {
             value = formatDate(value)
         }
         return <TableCell key={p.prop}>{value}</TableCell>;
