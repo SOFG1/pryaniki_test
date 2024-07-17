@@ -27,6 +27,17 @@ const StyledContent = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  @media screen and (max-width: 600px) {
+    justify-content: flex-start;
+    transform: translate(0, 0);
+    top: 35px;
+    overflow-y: auto;
+    left: 35px;
+    right: 35px;
+    bottom: 35px;
+    min-height: auto;
+    min-width: auto;
+  }
 `;
 
 const StyledTitle = styled.p`
@@ -148,7 +159,7 @@ export const CreateEditItemComponent = ({
                   </DemoContainer>
                 </LocalizationProvider>
                 {errors[p.prop]?.map((e) => (
-                  <StyledError>{e}</StyledError>
+                  <StyledError key={e}>{e}</StyledError>
                 ))}
               </InputWrapper>
             );
@@ -164,7 +175,7 @@ export const CreateEditItemComponent = ({
                 onChange={(e) => handleChange(p.prop, e.target.value)}
               />
               {errors[p.prop]?.map((e) => (
-                <StyledError>{e}</StyledError>
+                <StyledError key={e}>{e}</StyledError>
               ))}
             </InputWrapper>
           );
