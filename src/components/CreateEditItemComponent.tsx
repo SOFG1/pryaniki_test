@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, TextField, Modal } from "@mui/material";
+import { Button, TextField, Modal, CircularProgress } from "@mui/material";
 import styled from "styled-components";
 import { ITableItem, tableApi } from "../api/tableApi";
 import { TABLE_ITEM_PROPERTIES } from "../constants";
@@ -169,7 +169,7 @@ export const CreateEditItemComponent = ({
             </InputWrapper>
           );
         })}
-        {!selectedItem && (
+        {!selectedItem && !isFetching && (
           <Button
             onClick={handleCreate}
             variant="contained"
@@ -179,7 +179,7 @@ export const CreateEditItemComponent = ({
             Create
           </Button>
         )}
-        {selectedItem && (
+        {selectedItem && !isFetching && (
           <Button
             onClick={handleEdit}
             variant="contained"
@@ -188,6 +188,7 @@ export const CreateEditItemComponent = ({
             Edit
           </Button>
         )}
+        {isFetching && <CircularProgress />}
         {errorMessage && <StyledError>{errorMessage}</StyledError>}
       </StyledContent>
     </Modal>
