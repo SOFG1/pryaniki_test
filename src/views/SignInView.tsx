@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Button } from "../UI/Button";
 import { handleRequest } from "../api";
 import { SignInData, userApi } from "../api/userApi";
+import { useDispatch } from "react-redux";
+import { setToken } from "../store/user/slice";
 
 const StyledView = styled.div`
   max-width: 300px;
@@ -23,28 +25,36 @@ const StyledTitle = styled.h1`
 `;
 
 const StyledInput = styled(Input)`
-    margin-bottom: 25px;
-`
+  margin-bottom: 25px;
+`;
 
 export const SignInView = () => {
-    const [userName, setUserName] = useState<string>("")
-    const [password, setPassword] = useState<string>("")
+  const dispatch = useDispatch();
+  const [userName, setUserName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-
-    const signin = async () => {
-      const reqData: SignInData = {username: userName, password}
-      const {data, error} = await handleRequest(userApi.login(reqData))
-      console.log(data)
-      console.log(error)
-
-
+  const signin = async () => {
+    const reqData: SignInData = { username: userName, password };
+    const { data, error } = await handleRequest(userApi.login(reqData));
+    if(data) {
+      dispatch(setToken(data.token))
     }
+  };
 
   return (
     <StyledView>
       <StyledTitle>Sign In</StyledTitle>
-      <StyledInput placeholder="User Name" value={userName} onChange={setUserName} />
-      <StyledInput placeholder="Password" value={password} onChange={setPassword} type="password" />
+      <StyledInput
+        placeholder="User Name"
+        value={userName}
+        onChange={setUserName}
+      />
+      <StyledInput
+        placeholder="Password"
+        value={password}
+        onChange={setPassword}
+        type="password"
+      />
       <Button onClick={signin}>Sign in</Button>
     </StyledView>
   );
