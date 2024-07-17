@@ -11,6 +11,7 @@ export const TableHeadComponent = () => {
         })}
         <TableCell>
           <Button
+            fullWidth={true}
             color="success"
             startIcon={<AddCircle fontSize="small" />}
             variant="contained"

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { userTokenSelector } from "../store/user/selectors";
 import { useState } from "react";
 import { handleRequest } from "../api";
+import { formatDate } from "../utils/formatDate";
 
 interface IProps {
   item: ITableItem;
@@ -29,10 +30,27 @@ export const TableRowComponent = ({ item, onDelete }: IProps) => {
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
       {TABLE_ITEM_PROPERTIES.map((p) => {
-        return <TableCell key={p.prop}>{item[p.prop]}</TableCell>;
+        let value = item[p.prop]
+        if(p.prop === "companySigDate") {
+            value = formatDate(value)
+        }
+        if(p.prop === "employeeSigDate") {
+            value = formatDate(value)
+        }
+        return <TableCell key={p.prop}>{value}</TableCell>;
       })}
       <TableCell>
         <Button
+          startIcon={<DeleteIcon fontSize="small" />}
+          variant="contained"
+          fullWidth={true}
+        >
+          Edit
+        </Button>
+      </TableCell>
+      <TableCell>
+        <Button
+          fullWidth={true}
           onClick={handleDelete}
           disabled={isDeleting}
           color="error"
