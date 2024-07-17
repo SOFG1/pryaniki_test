@@ -5,6 +5,9 @@ export interface ITableItem {
   [key: string]: string;
 }
 
+
+export type ICraeteTableItem = Omit<ITableItem, "id">;
+
 export const tableApi = {
   getTable: async (token: string) => {
     return await axiosInstance.get(`/userdocs/get`, {
@@ -17,6 +20,17 @@ export const tableApi = {
     return await axiosInstance.post(
       `/userdocs/delete/${id}`,
       {},
+      {
+        headers: {
+          "x-auth": token,
+        },
+      }
+    );
+  },
+  createItem: async (token: string, data: ICraeteTableItem) => {
+    return await axiosInstance.post(
+      `/userdocs/create`,
+      data,
       {
         headers: {
           "x-auth": token,

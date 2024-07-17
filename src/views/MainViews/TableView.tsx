@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { TableHeadComponent } from "../../components/TableHeadComponent";
 import { TableRowComponent } from "../../components/TableRowComponent";
+import { CreateTableItemComponent } from "../../components/CreateTableItemComponent";
 
 const StyledWrapper = styled.div`
   padding-top: 100px;
@@ -22,6 +23,7 @@ export const TableView = () => {
   const token = useSelector(userTokenSelector) as string;
   const [tableData, setTableData] = useState<ITableItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -32,8 +34,12 @@ export const TableView = () => {
   };
 
   const onDeleteItem = (id: string) => {
-    setTableData(p => p.filter(i => i.id !== id))
-  }
+    setTableData((p) => p.filter((i) => i.id !== id));
+  };
+
+  const onCreateItem = (item: ITableItem) => {
+    setTableData((p) => [...p, item]);
+  };
 
   useEffect(() => {
     fetchData();
@@ -46,15 +52,24 @@ export const TableView = () => {
       ) : (
         <TableContainer>
           <Table size="small" aria-label="a dense table">
-            <TableHeadComponent />
+            <TableHeadComponent openCreate={() => setShowModal(true)} />
             <TableBody>
               {tableData.map((item) => (
-                <TableRowComponent onDelete={onDeleteItem} item={item} key={item.id} />
+                <TableRowComponent
+                  onDelete={onDeleteItem}
+                  item={item}
+                  key={item.id}
+                />
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       )}
+      <CreateTableItemComponent
+        open={showModal}
+        onCreate={onCreateItem}
+        onClose={() => setShowModal(false)}
+      />
     </StyledWrapper>
   );
 };

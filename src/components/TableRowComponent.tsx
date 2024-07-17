@@ -2,6 +2,7 @@ import { Button, TableCell, TableRow } from "@mui/material";
 import { ITableItem, tableApi } from "../api/tableApi";
 import { TABLE_ITEM_PROPERTIES } from "../constants";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from '@mui/icons-material/Edit';
 import { useSelector } from "react-redux";
 import { userTokenSelector } from "../store/user/selectors";
 import { useState } from "react";
@@ -41,7 +42,7 @@ export const TableRowComponent = ({ item, onDelete }: IProps) => {
       })}
       <TableCell>
         <Button
-          startIcon={<DeleteIcon fontSize="small" />}
+          startIcon={<EditIcon fontSize="small" />}
           variant="contained"
           fullWidth={true}
         >

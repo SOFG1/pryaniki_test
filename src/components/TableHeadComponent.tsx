@@ -2,7 +2,12 @@ import { Button, TableCell, TableHead, TableRow } from "@mui/material";
 import { TABLE_ITEM_PROPERTIES } from "../constants";
 import { AddCircle } from "@mui/icons-material";
 
-export const TableHeadComponent = () => {
+
+interface IProps {
+  openCreate: () => void
+}
+
+export const TableHeadComponent = ({openCreate}: IProps) => {
   return (
     <TableHead>
       <TableRow>
@@ -15,6 +20,7 @@ export const TableHeadComponent = () => {
             color="success"
             startIcon={<AddCircle fontSize="small" />}
             variant="contained"
+            onClick={openCreate}
           >
             Create
           </Button>
