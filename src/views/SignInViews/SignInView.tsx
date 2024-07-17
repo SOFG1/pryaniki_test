@@ -4,7 +4,7 @@ import { handleRequest } from "../../api";
 import { SignInData, userApi } from "../../api/userApi";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../store/user/slice";
-import { Button, Input } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 
 const StyledView = styled.div`
   max-width: 300px;
@@ -23,9 +23,6 @@ const StyledTitle = styled.h1`
   text-align: center;
 `;
 
-const StyledInput = styled(Input)`
-  margin-bottom: 25px;
-`;
 
 const StyledError = styled.p`
   color: red;
@@ -59,13 +56,15 @@ export const SignInView = () => {
   return (
     <StyledView>
       <StyledTitle>Sign In</StyledTitle>
-      <StyledInput
-        placeholder="User Name"
+      <TextField
+        style={{ marginBottom: "25px" }}
+        label="User Name"
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
       />
-      <StyledInput
-        placeholder="Password"
+      <TextField
+        style={{ marginBottom: "25px" }}
+        label="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         type="password"

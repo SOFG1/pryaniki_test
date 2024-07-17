@@ -1,4 +1,4 @@
-import { Button, Input, Modal } from "@mui/material";
+import { Button, TextField, Modal } from "@mui/material";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ICraeteTableItem, ITableItem, tableApi } from "../api/tableApi";
@@ -26,11 +26,6 @@ const StyledContent = styled.div`
 const StyledTitle = styled.p`
   font-size: 30px;
   font-weight: 700;
-`;
-
-const StyledInput = styled(Input)`
-  margin-bottom: 25px;
-  width: 100%;
 `;
 
 const StyledError = styled.p`
@@ -82,17 +77,16 @@ export const CreateTableItemComponent = ({
     }
   }, [error]);
 
-
   return (
     <Modal open={open} onClose={onClose}>
       <StyledContent>
         <StyledTitle>Craete item</StyledTitle>
         {TABLE_ITEM_PROPERTIES.map((p) => {
           return (
-            <StyledInput
+            <TextField
+              style={{ marginBottom: "25px", width: "100%" }}
               key={p.prop}
-              aria-label="test"
-              placeholder={p.viewName}
+              label={p.viewName}
               value={data[p.prop] || ""}
               onChange={(e) => handleChange(p.prop, e.target.value)}
             />
