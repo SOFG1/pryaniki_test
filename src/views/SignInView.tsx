@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { Input } from "../UI/Input";
 import { useState } from "react";
 import { Button } from "../UI/Button";
+import { handleRequest } from "../api";
+import { SignInData, userApi } from "../api/userApi";
 
 const StyledView = styled.div`
   max-width: 300px;
@@ -28,12 +30,22 @@ export const SignInView = () => {
     const [userName, setUserName] = useState<string>("")
     const [password, setPassword] = useState<string>("")
 
+
+    const signin = async () => {
+      const reqData: SignInData = {username: userName, password}
+      const {data, error} = await handleRequest(userApi.login(reqData))
+      console.log(data)
+      console.log(error)
+
+
+    }
+
   return (
     <StyledView>
       <StyledTitle>Sign In</StyledTitle>
       <StyledInput placeholder="User Name" value={userName} onChange={setUserName} />
       <StyledInput placeholder="Password" value={password} onChange={setPassword} type="password" />
-      <Button onClick={() => {}}>Sign in</Button>
+      <Button onClick={signin}>Sign in</Button>
     </StyledView>
   );
 };
