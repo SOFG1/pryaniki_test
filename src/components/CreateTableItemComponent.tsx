@@ -41,6 +41,11 @@ const StyledError = styled.p`
   text-align: center;
 `;
 
+const InputWrapper = styled.div`
+  width: 100%;
+  margin-bottom: 25px;
+`;
+
 interface IProps {
   open: boolean;
   selectedItem: ITableItem | null;
@@ -60,12 +65,15 @@ export const CreateTableItemComponent = ({
   const [data, setData] = useState<any>({});
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
 
   const handleChange = (prop: string, value: any) => {
     setData((p: any) => ({ ...p, [prop]: value }));
   };
 
   const handleCreate = async () => {
+    setErrors({});
+    setError(null);
     setIsFetching(true);
     const { data: reqData, error: reqError } = await handleRequest(
       tableApi.createItem(token, data)
@@ -77,11 +85,14 @@ export const CreateTableItemComponent = ({
       onClose();
     }
     if (reqError) {
+      setErrors(reqError.errors);
       setError(reqError.title);
     }
   };
 
   const handleEdit = async () => {
+    setErrors({});
+    setError(null);
     setIsFetching(true);
     const { data: reqData, error: reqError } = await handleRequest(
       tableApi.editItem(token, (selectedItem as ITableItem).id, data)
@@ -93,16 +104,10 @@ export const CreateTableItemComponent = ({
       onClose();
     }
     if (reqError) {
+      setErrors(reqError.errors);
       setError(reqError.title);
     }
   };
-
-  //Reset error
-  useEffect(() => {
-    if (error) {
-      setTimeout(() => setError(null), 4000);
-    }
-  }, [error]);
 
   //Fill form with selected data
   useEffect(() => {
@@ -112,6 +117,14 @@ export const CreateTableItemComponent = ({
     }
   }, [selectedItem]);
 
+  useEffect(() => {
+    if (!open) {
+      setData({});
+      setErrors({});
+      setError(null);
+    }
+  }, [open]);
+
   return (
     <Modal open={open} onClose={onClose}>
       <StyledContent>
@@ -119,33 +132,41 @@ export const CreateTableItemComponent = ({
         {TABLE_ITEM_PROPERTIES.map((p) => {
           if (p.type === "date") {
             return (
-              <LocalizationProvider dateAdapter={AdapterDayjs} key={p.prop}>
-                <DemoContainer
-                  components={["DateTimePicker"]}
-                  sx={{ width: "100%", mb: "25px" }}
-                >
-                  <DateTimePicker
-                  slotProps={{
-                    textField: {
-                      error: false
-                    }
-                  }}
-                    label={p.viewName}
-                    value={dayjs(data[p.prop] || null)}
-                    onChange={(v) => handleChange(p.prop, v)}
-                  />
-                </DemoContainer>
-              </LocalizationProvider>
+              <InputWrapper>
+                <LocalizationProvider dateAdapter={AdapterDayjs} key={p.prop}>
+                  <DemoContainer components={["DateTimePicker"]}>
+                    <DateTimePicker
+                      slotProps={{
+                        textField: {
+                          error: false,
+                        },
+                      }}
+                      label={p.viewName}
+                      value={dayjs(data[p.prop] || null)}
+                      onChange={(v) => handleChange(p.prop, v)}
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
+                {errors[p.prop]?.map((e) => (
+                  <StyledError>{e}</StyledError>
+                ))}
+              </InputWrapper>
             );
           }
           return (
-            <TextField
-              style={{ marginBottom: "25px", width: "100%" }}
-              key={p.prop}
-              label={p.viewName}
-              value={data[p.prop] || ""}
-              onChange={(e) => handleChange(p.prop, e.target.value)}
-            />
+            <InputWrapper>
+              <TextField
+                error={errors[p.prop]?.length > 0}
+                style={{ width: "100%" }}
+                key={p.prop}
+                label={p.viewName}
+                value={data[p.prop] || ""}
+                onChange={(e) => handleChange(p.prop, e.target.value)}
+              />
+              {errors[p.prop]?.map((e) => (
+                <StyledError>{e}</StyledError>
+              ))}
+            </InputWrapper>
           );
         })}
         {!selectedItem && (
