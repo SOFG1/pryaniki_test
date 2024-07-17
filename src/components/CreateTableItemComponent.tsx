@@ -64,7 +64,7 @@ export const CreateTableItemComponent = ({
   const token = useSelector(userTokenSelector) as string;
   const [data, setData] = useState<any>({});
   const [isFetching, setIsFetching] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
 
   const handleChange = (prop: string, value: any) => {
@@ -73,7 +73,7 @@ export const CreateTableItemComponent = ({
 
   const handleCreate = async () => {
     setErrors({});
-    setError(null);
+    setErrorMessage(null);
     setIsFetching(true);
     const { data: reqData, error: reqError } = await handleRequest(
       tableApi.createItem(token, data)
@@ -86,13 +86,13 @@ export const CreateTableItemComponent = ({
     }
     if (reqError) {
       setErrors(reqError.errors);
-      setError(reqError.title);
+      setErrorMessage(reqError.title);
     }
   };
 
   const handleEdit = async () => {
     setErrors({});
-    setError(null);
+    setErrorMessage(null);
     setIsFetching(true);
     const { data: reqData, error: reqError } = await handleRequest(
       tableApi.editItem(token, (selectedItem as ITableItem).id, data)
@@ -105,13 +105,13 @@ export const CreateTableItemComponent = ({
     }
     if (reqError) {
       setErrors(reqError.errors);
-      setError(reqError.title);
+      setErrorMessage(reqError.title);
     }
   };
 
   //Fill form with selected data
   useEffect(() => {
-    if (selectedItem?.companySigDate) {
+    if (selectedItem) {
       const convertedData = convertApiData(selectedItem);
       setData(convertedData);
     }
@@ -121,7 +121,7 @@ export const CreateTableItemComponent = ({
     if (!open) {
       setData({});
       setErrors({});
-      setError(null);
+      setErrorMessage(null);
     }
   }, [open]);
 
@@ -188,7 +188,7 @@ export const CreateTableItemComponent = ({
             Edit
           </Button>
         )}
-        {error && <StyledError>{error}</StyledError>}
+        {errorMessage && <StyledError>{errorMessage}</StyledError>}
       </StyledContent>
     </Modal>
   );
