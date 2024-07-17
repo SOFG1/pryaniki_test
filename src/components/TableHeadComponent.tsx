@@ -1,5 +1,6 @@
-import { TableCell, TableHead, TableRow } from "@mui/material";
+import { Button, TableCell, TableHead, TableRow } from "@mui/material";
 import { TABLE_ITEM_PROPERTIES } from "../constants";
+import { AddCircle } from "@mui/icons-material";
 
 export const TableHeadComponent = () => {
   return (
@@ -8,6 +9,15 @@ export const TableHeadComponent = () => {
         {TABLE_ITEM_PROPERTIES.map((p) => {
           return <TableCell key={p}>{p}</TableCell>;
         })}
+        <TableCell>
+          <Button
+            color="success"
+            startIcon={<AddCircle fontSize="small" />}
+            variant="contained"
+          >
+            Create
+          </Button>
+        </TableCell>
       </TableRow>
     </TableHead>
   );

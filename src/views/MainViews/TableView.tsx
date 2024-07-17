@@ -31,6 +31,10 @@ export const TableView = () => {
     if (error) console.log(error);
   };
 
+  const onDeleteItem = (id: string) => {
+    setTableData(p => p.filter(i => i.id !== id))
+  }
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -45,7 +49,7 @@ export const TableView = () => {
             <TableHeadComponent />
             <TableBody>
               {tableData.map((item) => (
-                <TableRowComponent item={item} key={item.id} />
+                <TableRowComponent onDelete={onDeleteItem} item={item} key={item.id} />
               ))}
             </TableBody>
           </Table>

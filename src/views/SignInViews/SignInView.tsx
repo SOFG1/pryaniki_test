@@ -1,11 +1,10 @@
 import styled from "styled-components";
-import { Input } from "../../UI/Input";
 import { useEffect, useState } from "react";
-import { Button } from "../../UI/Button";
 import { handleRequest } from "../../api";
 import { SignInData, userApi } from "../../api/userApi";
 import { useDispatch } from "react-redux";
 import { setToken } from "../../store/user/slice";
+import { Button, Input } from "@mui/material";
 
 const StyledView = styled.div`
   max-width: 300px;
@@ -32,32 +31,30 @@ const StyledError = styled.p`
   color: red;
   margin-top: 10px;
   text-align: center;
-`
+`;
 
 export const SignInView = () => {
   const dispatch = useDispatch();
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const signin = async () => {
     const reqData: SignInData = { username: userName, password };
-    setIsLoading(true)
+    setIsLoading(true);
     const { data, error } = await handleRequest(userApi.login(reqData));
-    setIsLoading(false)
-    if(data) dispatch(setToken(data.token))
-    if(error) setError(error)
+    setIsLoading(false);
+    if (data) dispatch(setToken(data.token));
+    if (error) setError(error);
   };
-
-
 
   //Reset error
   useEffect(() => {
-    if(error) {
-      setTimeout(() => setError(null), 4000)
+    if (error) {
+      setTimeout(() => setError(null), 4000);
     }
-  }, [error])
+  }, [error]);
 
   return (
     <StyledView>
@@ -65,15 +62,17 @@ export const SignInView = () => {
       <StyledInput
         placeholder="User Name"
         value={userName}
-        onChange={setUserName}
+        onChange={(e) => setUserName(e.target.value)}
       />
       <StyledInput
         placeholder="Password"
         value={password}
-        onChange={setPassword}
+        onChange={(e) => setPassword(e.target.value)}
         type="password"
       />
-      <Button onClick={signin} disabled={isLoading}>Sign in</Button>
+      <Button onClick={signin} variant="contained" disabled={isLoading}>
+        Sign in
+      </Button>
       {error && <StyledError>{error}</StyledError>}
     </StyledView>
   );
